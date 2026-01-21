@@ -103,20 +103,29 @@ app.get('/ebay/browse', async (req, res) => {
 });
 
 
-app.get('/ebay/sold-links', (req, res) => {
-  const q = (req.query.q || '').toString().trim();
-  if (q.length < 5) return res.status(400).json({ error: 'Query too short' });
+app.get("/ebay/sold-links", (req, res) => {
+  try {
+    const q = (req.query.q || "").trim();
+    if (!q) return res.status(400).json({ error: "Missing q" });
 
+    const encoded = encodeURIComponent(q);
 
-  res.json({
-    query: q,
-    links: {
-      core: ebaySoldUrl(q),
-      auctionOnly: ebaySoldUrl(q, '&LH_Auction=1'),
-      category212: ebaySoldUrl(q, '&_sacat=212')
-    }
-  });
+    const core =
+      `https://www.ebay.com/sch/i.html?_nkw=${encoded}` +
+      `&LH_Sold=1&LH_Complete=1&rt=nc`;
+
+    const auctionOnly = core + `&LH_Auction=1`;
+    const category212 = core + `&_sacat=212`;
+
+    return res.json({
+      query: q,
+      links: { core, auctionOnly, category212 }
+    });
+  } catch (err) {
+    return res.status(500).json({ error: String(err) });
+  }
 });
+
 
 app.get('/openapi.json', (_req, res) => {
   res.json({
