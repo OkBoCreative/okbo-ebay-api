@@ -124,17 +124,21 @@ app.get("/ebay/sold-links", (req, res) => {
   const links = buildSoldLinks(q);
   return res.json({ query: q, links });
 });
-
-app.get('/openapi.json', (_req, res) => {
+app.get('/openapi.json', (req, res) => {
   res.json({
-    openapi: "3.0.0",
+    openapi: "3.1.0",
     info: {
       title: "OkBo eBay Tools",
       version: "1.0.0",
       description: "OkBo endpoints for eBay Browse and Sold-link generation"
     },
-    servers: [{ url: "https://okbo-ebay-api.onrender.com" }],
+    servers: [{ url: `${req.protocol}://${req.get("host")}` }],
     paths: {
+      ...
+    }
+  });
+});
+
       "/health": {
         get: {
           operationId: "health",
