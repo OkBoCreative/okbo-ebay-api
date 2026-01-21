@@ -64,7 +64,7 @@ function getProdToken() {
   return b64 ? Buffer.from(b64, 'base64').toString('utf8') : '';
 }
 
-app.get('/health', (_req, res) => res.json({ ok: true, version: API_VERSION }));
+app.get('/health', (_req, res) => res.json({ ok: true, version: API_VERSION, build: "openapi-3.1-test-1" }));
 
 app.get('/ebay/browse', async (req, res) => {
   try {
@@ -126,10 +126,8 @@ app.get("/ebay/sold-links", (req, res) => {
 });
 app.get('/openapi.json', (req, res) => {
   res.json({
-    openapi: "3.1.0",
-    info: {
-      title: "OkBo eBay Tools",
-      version: "1.0.0",
+   openapi: "3.1.0",
+info: { ... , version: "1.0.1" },
       description: "OkBo endpoints for eBay Browse and Sold-link generation"
     },
     servers: [{ url: `${req.protocol}://${req.get("host")}` }],
