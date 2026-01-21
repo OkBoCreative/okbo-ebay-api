@@ -133,7 +133,7 @@ app.get('/openapi.json', (_req, res) => {
       version: "1.0.0",
       description: "OkBo endpoints for eBay Browse and Sold-link generation"
     },
-    servers: [{ url: "http://localhost:3007" }],
+    servers: [{ url: "https://okbo-ebay-api.onrender.com" }],
     paths: {
       "/health": {
         get: {
